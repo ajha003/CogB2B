@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile & Services</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 30px;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        
+        .profile-avatar-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 3rem;
+        }
+        
+        .service-badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px 5px;
+            font-size: 0.9rem;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stats-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .contact-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .about-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        
+        .service-details {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        
+        .service-feature {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .action-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .btn-custom {
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .btn-outline-custom {
+            border: 2px solid #667eea;
+            color: #667eea;
+            background: transparent;
+        }
+        
+        .btn-outline-custom:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .location-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+        
+        .rating-stars {
+            color: #ffc107;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        
+        .availability-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-busy {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-offline {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .portfolio-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .portfolio-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .portfolio-content {
+            padding: 20px;
+        }
+        
+        .skills-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 5px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 fw-bold">User Profile & Services</h1>
+                    <p class="lead">Discover detailed information about our talented professionals and their services</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <i class="fas fa-user-circle fa-4x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Profile Card -->
+            <div class="col-lg-4">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <img src="https://via.placeholder.com/120x120/667eea/ffffff?text=JD" alt="Profile Picture" class="profile-avatar" />
+                        <h3>John Doe</h3>
+                        <div class="service-badge">Web Development</div>
+                        <div class="availability-status status-available">Available</div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="location-badge">
+                            <i class="fas fa-map-marker-alt me-2"></i>San Francisco, CA
+                        </div>
+                        
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="ms-2 text-muted">(4.5/5)</span>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary-custom btn-custom">
+                                <i class="fas fa-envelope me-2"></i>Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="contact-info">
+                    <h5 class="mb-3"><i class="fas fa-address-book me-2"></i>Contact Information</h5>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <strong>Phone</strong><br>
+                            <span class="text-muted">+1 (555) 123-4567</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Mobile</strong><br>
+                            <span class="text-muted">+1 (555) 987-6543</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <strong>Email</strong><br>
+                            <span class="text-muted">john.doe@example.com</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div>
+                            <strong>Website</strong><br>
+                            <span class="text-muted">www.johndoe.dev</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Statistics -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number">150+</div>
+                            <div class="stats-label">Projects Completed</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number">5+</div>
+                            <div class="stats-label">Years Experience</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number">98%</div>
+                            <div class="stats-label">Client Satisfaction</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <div class="stats-number">24/7</div>
+                            <div class="stats-label">Support Available</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- About Section -->
+                <div class="about-section">
+                    <h4><i class="fas fa-user-edit me-2"></i>About Me</h4>
+                    <p class="lead">I'm a passionate web developer with over 5 years of experience creating modern, responsive websites and web applications. I specialize in React, Node.js, and full-stack development, delivering high-quality solutions that exceed client expectations.</p>
+                </div>
+                
+                <!-- Skills Section -->
+                <div class="skills-section">
+                    <h4><i class="fas fa-code me-2"></i>Skills & Technologies</h4>
+                    <div class="skill-tag">React</div>
+                    <div class="skill-tag">Node.js</div>
+                    <div class="skill-tag">JavaScript</div>
+                    <div class="skill-tag">TypeScript</div>
+                    <div class="skill-tag">Python</div>
+                    <div class="skill-tag">Django</div>
+                    <div class="skill-tag">PostgreSQL</div>
+                    <div class="skill-tag">MongoDB</div>
+                    <div class="skill-tag">AWS</div>
+                    <div class="skill-tag">Docker</div>
+                    <div class="skill-tag">Git</div>
+                    <div class="skill-tag">REST APIs</div>
+                </div>
+                
+                <!-- Service Details -->
+                <div class="service-details">
+                    <h4><i class="fas fa-cogs me-2"></i>Service Details</h4>
+                    
+                    <div class="service-feature">
+                        <h6><i class="fas fa-tag me-2"></i>Service Category</h6>
+                        <p class="mb-0">Web Development, Full-Stack Development, API Development</p>
+                    </div>
+                    
+                    <div class="service-feature">
+                        <h6><i class="fas fa-rocket me-2"></i>What I Offer</h6>
+                        <p class="mb-0">Professional web development services with a focus on quality, reliability, and customer satisfaction. I specialize in delivering exceptional results that exceed expectations.</p>
+                    </div>
+                    
+                    <div class="service-feature">
+                        <h6><i class="fas fa-clock me-2"></i>Response Time</h6>
+                        <p class="mb-0">I typically respond to inquiries within 2-4 hours during business hours. For urgent requests, I'm available for immediate consultation.</p>
+                    </div>
+                    
+                    <div class="service-feature">
+                        <h6><i class="fas fa-shield-alt me-2"></i>Quality Guarantee</h6>
+                        <p class="mb-0">100% satisfaction guaranteed. If you're not completely satisfied with my work, I'll make it right or provide a full refund.</p>
+                    </div>
+                    
+                    <div class="service-feature">
+                        <h6><i class="fas fa-dollar-sign me-2"></i>Pricing</h6>
+                        <p class="mb-0">Competitive rates starting from $75/hour. Project-based pricing available for larger projects. Free consultation for new clients.</p>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary-custom btn-custom">
+                        <i class="fas fa-calendar-check me-2"></i>Book Consultation
+                    </button>
+                    <button class="btn btn-outline-custom btn-custom">
+                        <i class="fas fa-download me-2"></i>Download Portfolio
+                    </button>
+                    <button class="btn btn-outline-custom btn-custom">
+                        <i class="fas fa-share me-2"></i>Share Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Portfolio Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-briefcase me-2"></i>Recent Projects</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="portfolio-grid">
+                            <div class="portfolio-item">
+                                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=E-commerce" alt="Project 1" class="portfolio-image">
+                                <div class="portfolio-content">
+                                    <h6>E-commerce Platform</h6>
+                                    <p class="text-muted">Full-stack e-commerce solution with React and Node.js</p>
+                                    <div class="skill-tag">React</div>
+                                    <div class="skill-tag">Node.js</div>
+                                </div>
+                            </div>
+                            <div class="portfolio-item">
+                                <img src="https://via.placeholder.com/300x200/764ba2/ffffff?text=Dashboard" alt="Project 2" class="portfolio-image">
+                                <div class="portfolio-content">
+                                    <h6>Analytics Dashboard</h6>
+                                    <p class="text-muted">Real-time analytics dashboard with data visualization</p>
+                                    <div class="skill-tag">TypeScript</div>
+                                    <div class="skill-tag">D3.js</div>
+                                </div>
+                            </div>
+                            <div class="portfolio-item">
+                                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=API" alt="Project 3" class="portfolio-image">
+                                <div class="portfolio-content">
+                                    <h6>REST API Service</h6>
+                                    <p class="text-muted">Scalable API service with authentication and documentation</p>
+                                    <div class="skill-tag">Python</div>
+                                    <div class="skill-tag">Django</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Client Reviews -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-star me-2"></i>Client Reviews</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Client">
+                                    <div>
+                                        <h6 class="mb-0">Sarah Johnson</h6>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-muted">"Exceptional work quality and professional communication throughout the project. Highly recommended!"</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Client">
+                                    <div>
+                                        <h6 class="mb-0">Michael Chen</h6>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-muted">"Delivered exactly what was promised, on time and within budget. Will definitely work together again!"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
