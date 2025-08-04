@@ -1,0 +1,71 @@
+@page
+@model ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>@Model.UserName's Profile</h3>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.BannerImage))
+                    {
+                        <div class="text-center mb-3">
+                            <img src="@Model.BannerImage" alt="Banner" class="img-fluid rounded" style="max-height: 200px; width: 100%; object-fit: cover;" />
+                        </div>
+                    }
+                    
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            @if (!string.IsNullOrEmpty(Model.ProfilePic))
+                            {
+                                <img src="@Model.ProfilePic" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 150px; height: 150px; margin: 0 auto;">
+                                    <i class="fas fa-user fa-3x text-white"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-9">
+                            <h4>@Model.UserName</h4>
+                            @if (!string.IsNullOrEmpty(Model.ServiceCategory))
+                            {
+                                <p class="text-muted"><strong>Service Category:</strong> @Model.ServiceCategory</p>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Location))
+                            {
+                                <p class="text-muted"><strong>Location:</strong> @Model.Location</p>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                            {
+                                <p class="text-muted"><strong>Phone:</strong> @Model.PhoneNumber</p>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.AlternativePhone))
+                            {
+                                <p class="text-muted"><strong>Alternative Phone:</strong> @Model.AlternativePhone</p>
+                            }
+                        </div>
+                    </div>
+                    
+                    @if (!string.IsNullOrEmpty(Model.AboutMe))
+                    {
+                        <div class="mt-4">
+                            <h5>About Me</h5>
+                            <p>@Model.AboutMe</p>
+                        </div>
+                    }
+                    
+                    <div class="mt-4">
+                        <a href="/Identity/Account/Manage" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
