@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Identity Manager</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .login-header h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+        
+        .login-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        .login-body {
+            padding: 2rem;
+        }
+        
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+        
+        .form-floating .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .form-floating .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .forgot-password a:hover {
+            color: #764ba2;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e9ecef;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .social-login {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-social {
+            flex: 1;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-google {
+            background: #fff;
+            color: #333;
+            border: 2px solid #e9ecef;
+        }
+        
+        .btn-google:hover {
+            background: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        
+        .btn-facebook {
+            background: #1877f2;
+            color: white;
+            border: none;
+        }
+        
+        .btn-facebook:hover {
+            background: #166fe5;
+            color: white;
+        }
+        
+        .signup-link {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .signup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .signup-link a:hover {
+            color: #764ba2;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .password-toggle:hover {
+            color: #667eea;
+        }
+        
+        .loading {
+            display: none;
+        }
+        
+        .loading.show {
+            display: inline-block;
+        }
+        
+        @media (max-width: 576px) {
+            .login-container {
+                margin: 1rem;
+                border-radius: 15px;
+            }
+            
+            .login-header {
+                padding: 1.5rem;
+            }
+            
+            .login-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="login-container">
+                    <!-- Header -->
+                    <div class="login-header">
+                        <h2><i class="bi bi-person-circle me-2"></i>Welcome Back</h2>
+                        <p>Sign in to your account</p>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <div class="login-body">
+                        <!-- Alert for messages -->
+                        <div class="alert alert-danger d-none" id="errorAlert" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <span id="errorMessage"></span>
+                        </div>
+                        
+                        <div class="alert alert-success d-none" id="successAlert" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <span id="successMessage"></span>
+                        </div>
+                        
+                        <form id="loginForm">
+                            <!-- Email Field -->
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                                <label for="email">Email address</label>
+                            </div>
+                            
+                            <!-- Password Field -->
+                            <div class="form-floating position-relative">
+                                <input type="password" class="form-control" id="password" placeholder="Password" required>
+                                <label for="password">Password</label>
+                                <button type="button" class="password-toggle" id="passwordToggle">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Remember Me -->
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">
+                                    Remember me
+                                </label>
+                            </div>
+                            
+                            <!-- Login Button -->
+                            <button type="submit" class="btn btn-primary btn-login" id="loginBtn">
+                                <span class="loading" id="loginLoading">
+                                    <i class="bi bi-arrow-clockwise spin"></i>
+                                </span>
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            </button>
+                        </form>
+                        
+                        <!-- Forgot Password -->
+                        <div class="forgot-password">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                                <i class="bi bi-question-circle me-1"></i>Forgot your password?
+                            </a>
+                        </div>
+                        
+                        <!-- Divider -->
+                        <div class="divider">
+                            <span>or continue with</span>
+                        </div>
+                        
+                        <!-- Social Login -->
+                        <div class="social-login">
+                            <button class="btn btn-social btn-google">
+                                <i class="bi bi-google me-2"></i>Google
+                            </button>
+                            <button class="btn btn-social btn-facebook">
+                                <i class="bi bi-facebook me-2"></i>Facebook
+                            </button>
+                        </div>
+                        
+                        <!-- Sign Up Link -->
+                        <div class="signup-link">
+                            Don't have an account? <a href="register.html">Sign up</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordModalLabel">
+                        <i class="bi bi-key me-2"></i>Reset Password
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted mb-3">
+                        Enter your email address and we'll send you a link to reset your password.
+                    </p>
+                    <form id="forgotPasswordForm">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="resetEmail" placeholder="name@example.com" required>
+                            <label for="resetEmail">Email address</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="sendResetLink">
+                        <span class="loading" id="resetLoading">
+                            <i class="bi bi-arrow-clockwise spin"></i>
+                        </span>
+                        <i class="bi bi-send me-2"></i>Send Reset Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'https://localhost:7001/api';
+        
+        // Password toggle functionality
+        document.getElementById('passwordToggle').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+        
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // Hide any existing alerts
+            hideAlerts();
+            
+            // Simple validation
+            if (!email || !password) {
+                showError('Please fill in all fields.');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address.');
+                return;
+            }
+            
+            // Show loading state
+            const loginBtn = document.getElementById('loginBtn');
+            const loginLoading = document.getElementById('loginLoading');
+            loginBtn.disabled = true;
+            loginLoading.classList.add('show');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        rememberMe: rememberMe
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.isSuccess) {
+                    // Store tokens
+                    localStorage.setItem('accessToken', data.accessToken);
+                    localStorage.setItem('refreshToken', data.refreshToken);
+                    localStorage.setItem('userInfo', JSON.stringify(data.user));
+                    
+                    showSuccess('Login successful! Redirecting...');
+                    
+                    // Redirect to dashboard after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1500);
+                } else {
+                    showError(data.message || 'Login failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                // Reset loading state
+                loginBtn.disabled = false;
+                loginLoading.classList.remove('show');
+            }
+        });
+        
+        // Forgot password form submission
+        document.getElementById('sendResetLink').addEventListener('click', async function() {
+            const email = document.getElementById('resetEmail').value;
+            
+            if (!email) {
+                showError('Please enter your email address.');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address.');
+                return;
+            }
+            
+            // Show loading state
+            const resetBtn = document.getElementById('sendResetLink');
+            const resetLoading = document.getElementById('resetLoading');
+            resetBtn.disabled = true;
+            resetLoading.classList.add('show');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.isSuccess) {
+                    showSuccess('Reset link sent! Check your email.');
+                    
+                    // Close modal after a delay
+                    setTimeout(() => {
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal'));
+                        modal.hide();
+                        document.getElementById('resetEmail').value = '';
+                    }, 2000);
+                } else {
+                    showError(data.message || 'Failed to send reset link. Please try again.');
+                }
+            } catch (error) {
+                console.error('Reset password error:', error);
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                // Reset loading state
+                resetBtn.disabled = false;
+                resetLoading.classList.remove('show');
+            }
+        });
+        
+        // Utility functions
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function showError(message) {
+            const errorAlert = document.getElementById('errorAlert');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorAlert.classList.remove('d-none');
+        }
+        
+        function showSuccess(message) {
+            const successAlert = document.getElementById('successAlert');
+            const successMessage = document.getElementById('successMessage');
+            successMessage.textContent = message;
+            successAlert.classList.remove('d-none');
+        }
+        
+        function hideAlerts() {
+            document.getElementById('errorAlert').classList.add('d-none');
+            document.getElementById('successAlert').classList.add('d-none');
+        }
+        
+        // Clear alerts when modal is closed
+        document.getElementById('forgotPasswordModal').addEventListener('hidden.bs.modal', function() {
+            document.getElementById('resetEmail').value = '';
+            hideAlerts();
+        });
+        
+        // Add spinning animation for loading icons
+        const style = document.createElement('style');
+        style.textContent = `
+            .spin {
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
